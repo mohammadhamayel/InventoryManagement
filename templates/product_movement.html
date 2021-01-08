@@ -5,13 +5,13 @@
 {% block body %}
 <div class="container">
 
-    <div class="row">
+    <div class="row" >
 
         <div class="col md-12">
 
 
 
-            <h2>Product Movements List <button type="button" class="btn btn-success  pull-right" data-toggle="modal" data-target="#myModal">Add Movement Data</button></h2>
+            <h2>Product Movements List <button type="button" class="btn btn-success  pull-right " id="addMovement" data-toggle="modal" data-target="#myModal">Add Movement Data</button></h2>
 
 
 
@@ -46,11 +46,11 @@
 
 
                 <tr>
-              <th>Serial</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Action</th>
+              <th>Product Name</th>
+              <th>From Location</th>
+              <th>To Location</th>
+              <th>Qty</th>
+              <th></th>
 
 
           </tr>
@@ -61,21 +61,30 @@
 
                 {% for row in productmovement %}
                 <tr>
-                    <td>{{row.0}}</td>
-                    <td>{{row.1}}</td>
-                    <td>{{row.2}}</td>
-                    <td>{{row.3}}</td>
+                    <input type="hidden" value="{{row.0}}" class="rowId">
+                    <td>{{row.4}}<input type="hidden" value="{{row.3}}" class="productId"></td>
+                    {% if row.1 == 0 %}
+                    <td>-</td>
+                    {% else %}
+                    <td>{{row.5}}<input type="hidden" value="{{row.1}}" class="fromLocation"></td>
+                    {% endif %}
+                    {% if row.2 == 0 %}
+                    <td>-</td>
+                    {% else %}
+                    <td>{{row.5}}<input type="hidden" value="{{row.2}}" class="toLocation"></td>
+                    {% endif %}
+                    <td class="updateQTY">{{row.6}}</td>
                     <td>
 
 
-               <a href="/update/{{row.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Edit</a>
-                <a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+               <a href="/updateMovement/{{row.0}}" class="btn btn-warning btn-xs editMovement" data-toggle="modal" data-target="#modaledit{{row.0}}">Edit</a>
+                <a href="/deleteMovement/{{ row.0 }}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
 
                     </td>
 
                 </tr>
 
-                <div id="modaledit{{row.0}}" class="modal fade" role="dialog">
+<div id="modaledit{{row.0}}" class="modal fade" role="dialog">
 
 
    <div class="modal-dialog">
@@ -90,7 +99,7 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
 
 
-            <h4 class="modal-title">Update Information</h4>
+            <h4 class="modal-title">Update Movement Data</h4>
 
 
          </div>
@@ -99,39 +108,51 @@
          <div class="modal-body">
 
 
-            <form action="{{ url_for('update') }}" method="POST">
+            <form action="{{ url_for('updateMovement') }}" method="POST">
+
+                <input type="hidden"  name="id" value="{{row.0}}">
+
+                <div class="form-group">
 
 
-               <div class="form-group">
+                  <label>Product Name:</label>
+                  <select class="form-control Product_Name" name="Product_Name"  required="1">
 
-
-                  <label>Name:</label>
-                   <input type="hidden"  name="id" value="{{row.0}}">
-
-                  <input type="text" class="form-control" name="name" value="{{row.1}}">
-
-
-               </div>
-
-
-
-               <div class="form-group">
-
-
-                  <label>Email:</label>
-
-                  <input type="text" class="form-control" name="email" value="{{row.2}}">
+                  </select>
 
 
                </div>
 
 
-               <div class="form-group">
+                <div class="form-group">
 
 
-                  <label>Phone:</label>
+                  <label>From Location:</label>
+                  <select class="form-control From_Location" name="From_Location" >
 
-                  <input type="text" class="form-control" name="phone" value="{{row.3}}">
+                  </select>
+
+
+               </div>
+
+
+                <div class="form-group">
+
+
+                  <label>To Location:</label>
+                  <select class="form-control To_Location" name="To_Location" >
+
+                  </select>
+
+
+               </div>
+
+
+                <div class="form-group">
+
+
+                  <label>Qty:</label>
+                  <input type="text" class="form-control Qty" name="Qty" required="1">
 
 
                </div>
@@ -200,7 +221,7 @@
             <button type="button" class="close" data-dismiss="modal">&times;</button>
 
 
-            <h4 class="modal-title">Please Insert Data</h4>
+            <h4 class="modal-title">Please Insert Movement Data</h4>
 
 
          </div>
@@ -209,14 +230,17 @@
          <div class="modal-body">
 
 
-            <form action="{{ url_for('insert') }}" method="POST">
+            <form action="{{ url_for('insertMovement') }}" method="POST">
 
 
-               <div class="form-group">
+
+                <div class="form-group">
 
 
-                  <label>Name:</label>
-                  <input type="text" class="form-control" name="name" required="1">
+                  <label>Product Name:</label>
+                  <select class="form-control Product_Name" name="Product_Name" id="Product_Name" required="1">
+
+                  </select>
 
 
                </div>
@@ -225,8 +249,10 @@
                 <div class="form-group">
 
 
-                  <label>Email:</label>
-                  <input type="text" class="form-control" name="email" required="1">
+                  <label>From Location:</label>
+                  <select class="form-control From_Location" name="From_Location" id="From_Location">
+
+                  </select>
 
 
                </div>
@@ -235,8 +261,20 @@
                 <div class="form-group">
 
 
-                  <label>Phone:</label>
-                  <input type="text" class="form-control" name="phone" required="1">
+                  <label>To Location:</label>
+                  <select class="form-control To_Location" name="To_Location" id="To_Location">
+
+                  </select>
+
+
+               </div>
+
+
+                <div class="form-group">
+
+
+                  <label>Qty:</label>
+                  <input type="text" class="form-control" name="Qty" required="1">
 
 
                </div>
@@ -291,3 +329,43 @@
 <script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
 
 <script type="text/javascript" src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+<script>
+    document.getElementById("addMovement").addEventListener("click", myFunction());
+    $(document).on('click', '.editMovement', function(){
+        myFunction
+        $('#modaledit input').val('')
+        var productId = $(this).parent().parent().find('.productId').val()
+        var fromLocation = $(this).parent().parent().find('.fromLocation').val()
+        var toLocation = $(this).parent().parent().find('.toLocation').val()
+        var QTY = $(this).parent().parent().find('.updateQTY').text()
+        console.log('productId= '+productId + '  fromLocation=   '  + fromLocation  + '  toLocation=    ' +toLocation + ' QTY   ' +QTY )
+        $('.Product_Name').val(productId);
+        $('.From_Location').val(fromLocation);
+        $('.To_Location').val(toLocation);
+        $('.Qty').text(QTY);
+
+    })
+
+    function myFunction() {
+        fetch('/getLists').then(function(response){
+            response.json().then(function(data){
+                console.table(data.location)
+                console.log(data["location"][0][0])
+                console.log(data["location"][0][1])
+                var htmlProducts = '<option value= "" ></option>'
+                var htmlLocations = '<option value= "" ></option>'
+                $.each(data.product, function (i, item) {
+                    htmlProducts += '<option value= "'+item[0]+'" >'+ item[1] + '</option>'
+                })
+                $.each(data.location, function (i, item) {
+                    htmlLocations += '<option value= "'+item[0]+'">'+ item[1] +  '</option>'
+                })
+                $('.Product_Name').html(htmlProducts);
+                $('.From_Location').html(htmlLocations);
+                $('.To_Location').html(htmlLocations);
+
+            })
+        });
+
+    }
+</script>

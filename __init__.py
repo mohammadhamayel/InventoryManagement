@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+import jsonConverter as jsonConverter
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, json
 from flask_mysqldb import MySQL
+
 
 
 
@@ -63,6 +65,30 @@ def insertLocation():
 
 
 
+@app.route('/insertMovement', methods = ['POST'])
+def insertMovement():
+
+    if request.method == "POST":
+        flash("Data Inserted Successfully")
+        Product_Name = request.form['Product_Name']
+        From_Location = request.form['From_Location']
+        if (From_Location == ""):
+            From_Location = 0
+
+        To_Location = request.form['To_Location']
+        if (To_Location == ""):
+            To_Location = 0
+
+
+        Qty = request.form['Qty']
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO productmovement (movement_product_id, movement_from_location, movement_to_location, "
+                    "movement_qty) VALUES (%s,%s,%s,%s)", (Product_Name, From_Location, To_Location, Qty))
+        mysql.connection.commit()
+        return redirect(url_for('product_movement'))
+
+
+
 
 @app.route('/delete/<string:id_data>', methods = ['GET'])
 def delete(id_data):
@@ -88,6 +114,14 @@ def deleteLocation(id_data):
     cur.execute("DELETE FROM location WHERE location_id=%s", (id_data,))
     mysql.connection.commit()
     return redirect(url_for('location'))
+
+@app.route('/deleteMovement/<string:id_data>', methods = ['GET'])
+def deleteMovement(id_data):
+    flash("Record Has Been Deleted Successfully")
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM productmovement WHERE movement_id=%s", (id_data,))
+    mysql.connection.commit()
+    return redirect(url_for('product_movement'))
 
 
 
@@ -143,6 +177,35 @@ def updateLocation():
         mysql.connection.commit()
         return redirect(url_for('location'))
 
+@app.route('/updateMovement', methods=['POST', 'GET'])
+def updateMovement():
+
+    if request.method == 'POST':
+        id_data = request.form['id']
+        productId = request.form['Product_Name']
+        fromLocation = request.form['From_Location']
+        toLocation = request.form['To_Location']
+        Qty = request.form['Qty']
+
+        if (fromLocation == ""):
+            fromLocation = 0
+
+        if (toLocation == ""):
+            toLocation = 0
+
+        cur = mysql.connection.cursor()
+        cur.execute("""
+               UPDATE productmovement
+               SET movement_product_id=%s,
+                movement_from_location=%s,
+                movement_to_location=%s,
+                movement_qty=%s
+               WHERE movement_id =%s
+            """, (productId, fromLocation, toLocation, Qty, id_data))
+        flash("Data Updated Successfully")
+        mysql.connection.commit()
+        return redirect(url_for('product_movement'))
+
 
 @app.route('/product')
 def product():
@@ -165,13 +228,32 @@ def location():
 @app.route('/product_movement')
 def product_movement():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT  * FROM productmovement")
+    cur.execute("SELECT  movement_id, movement_from_location, movement_to_location, movement_product_id,"
+                " product_name, location_Name, movement_qty "
+                "FROM productmovement left join product on movement_product_id = product_id "
+                "left join location on (movement_from_location = location_id or movement_to_location = location_id ) ")
     data = cur.fetchall()
     cur.close()
+    print(data)
+    return render_template('product_movement.html', productmovement=data)
 
-    return render_template('product_movement.html', productmovement=data )
+
+@app.route('/getLists')
+def getLists():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT  * FROM location")
+    location = cur.fetchall()
+    cur.execute("SELECT  * FROM product")
+    product = cur.fetchall()
+    dynamicLists = {}
+
+    dynamicLists["location"] = location
+    dynamicLists["product"] = product
+    return jsonify(dynamicLists)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
