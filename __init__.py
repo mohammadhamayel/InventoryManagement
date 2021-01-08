@@ -1,4 +1,3 @@
-import jsonConverter as jsonConverter
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, json
 from flask_mysqldb import MySQL
 
@@ -16,30 +15,18 @@ app.config['MYSQL_DB'] = 'Inventory_Management'
 mysql = MySQL(app)
 
 
-
 @app.route('/')
 def Index():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT  * FROM students")
+    cur.execute("SELECT product_name, location_Name, SUM(movement_qty), movement_to_location " 
+                " FROM productmovement left join product on movement_product_id = product_id "
+                " left join location on movement_to_location = location_id"
+                " GROUP BY product_name, location_Name, movement_to_location")
     data = cur.fetchall()
     cur.close()
 
-    return render_template('index2.html', students=data )
+    return render_template('index.html', report=data )
 
-
-
-@app.route('/insert', methods = ['POST'])
-def insert():
-
-    if request.method == "POST":
-        flash("Data Inserted Successfully")
-        name = request.form['name']
-        email = request.form['email']
-        phone = request.form['phone']
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO students (name, email, phone) VALUES (%s, %s, %s)", (name, email, phone))
-        mysql.connection.commit()
-        return redirect(url_for('Index'))
 
 @app.route('/insertProduct', methods = ['POST'])
 def insertProduct():
@@ -80,12 +67,22 @@ def insertMovement():
 
         if (From_Location == ""):
             From_Location = 0
-        else:
-            data = cur.execute("SELECT SUM(movement_qty) FROM productmovement WHERE movement_product_id= %s "
-                               "and movement_to_location= %s", (Product_Name, To_Location))
-            if int(data) < int(Qty):
-                flash("You can't move a Qty grater than the existence in this location", 'error')
-                return redirect(url_for('product_movement'))
+ ####       else:
+##            data = cur.execute("SELECT SUM(movement_qty) FROM productmovement WHERE movement_product_id= %s "
+#                               "and movement_to_location= %s", (Product_Name, From_Location))
+#            print(data)
+
+ #           if int(data) < int(Qty):
+ #               flash("You can't move a Qty grater than the existence in this location", 'error')
+ #               return redirect(url_for('product_movement'))
+ #           else:
+ #               restQty = int(data) - int(Qty)
+ #               cur.execute(""" UPDATE productmovement SET
+ #                               movement_qty=%s
+ #                               WHERE movement_product_id= %s and movement_to_location= %s""",
+ ###                           (restQty, Product_Name, To_Location))
+
+
 
         cur.execute("INSERT INTO productmovement (movement_product_id, movement_from_location, movement_to_location, "
                     "movement_qty) VALUES (%s,%s,%s,%s)", (Product_Name, From_Location, To_Location, Qty))
@@ -95,16 +92,11 @@ def insertMovement():
         return redirect(url_for('product_movement'))
 
 
-
-
-@app.route('/delete/<string:id_data>', methods = ['GET'])
-def delete(id_data):
-    flash("Record Has Been Deleted Successfully")
-    cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM students WHERE id=%s", (id_data,))
-    mysql.connection.commit()
-    return redirect(url_for('Index'))
-
+def check_sql_string(sql, values):
+    unique = "%PARAMETER%"
+    sql = sql.replace("?", unique)
+    for v in values: sql = sql.replace(unique, repr(v), 1)
+    return sql
 
 @app.route('/deleteProduct/<string:id_data>', methods = ['GET'])
 def deleteProduct(id_data):
@@ -130,27 +122,6 @@ def deleteMovement(id_data):
     mysql.connection.commit()
     return redirect(url_for('product_movement'))
 
-
-
-
-
-@app.route('/update',methods=['POST','GET'])
-def update():
-
-    if request.method == 'POST':
-        id_data = request.form['id']
-        name = request.form['name']
-        email = request.form['email']
-        phone = request.form['phone']
-        cur = mysql.connection.cursor()
-        cur.execute("""
-               UPDATE students
-               SET name=%s, email=%s, phone=%s
-               WHERE id=%s
-            """, (name, email, phone, id_data))
-        flash("Data Updated Successfully")
-        mysql.connection.commit()
-        return redirect(url_for('Index'))
 
 @app.route('/updateProduct', methods=['POST', 'GET'])
 def updateProduct():
@@ -256,6 +227,7 @@ def getLists():
     dynamicLists["location"] = location
     dynamicLists["product"] = product
     return jsonify(dynamicLists)
+
 
 
 if __name__ == "__main__":
