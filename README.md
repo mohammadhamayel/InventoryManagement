@@ -45,15 +45,15 @@ and before move a product from place to another you need to make sure that there
 
 Movement page
 
-![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/updateLocation.PNG)
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/movementPage.PNG)
 
 Insertion Modal
 
-![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/updateLocation.PNG)
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/insertMovement.PNG)
 
 edit data modal
 
-![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/updateLocation.PNG)
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/updateMovement.PNG)
 
 
 
