@@ -175,10 +175,3 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
-class products{
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT  * FROM productmovement")
-    data = cur.fetchall()
-    cur.close()
-
-}
