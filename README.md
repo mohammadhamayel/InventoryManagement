@@ -21,9 +21,7 @@ if you made a mistake in the inserted data you can either edit it by clicking on
 
 ![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/updateProduct.PNG)
 
-
-<br/>
-<br/>
+<br/><br/>
 
 Second: you need to define your Locations
 you need to enter each Location into the system from location sittings screen
@@ -36,4 +34,26 @@ Then add your location using location modal
 
 Edit a location record
 ![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/updateLocation.PNG)
+
+<br/><br/>
+Finally add product movement
+
+You must make sure that you have entered the data for your product names and locations 
+
+to make a movement you will select the product name and the needed location from drop down lists and these lists come from the data you inserted in the previous two steps,
+and before move a product from place to another you need to make sure that there are products in the to_location for the item which want to move to another location
+
+Movement page
+
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/updateLocation.PNG)
+
+Insertion Modal
+
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/updateLocation.PNG)
+
+edit data modal
+
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/updateLocation.PNG)
+
+
 
