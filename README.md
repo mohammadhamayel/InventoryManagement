@@ -22,7 +22,8 @@ if you made a mistake in the inserted data you can either edit it by clicking on
 ![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/updateProduct.PNG)
 
 
-
+<br/>
+<br/>
 
 Second: you need to define your Locations
 you need to enter each Location into the system from location sittings screen
