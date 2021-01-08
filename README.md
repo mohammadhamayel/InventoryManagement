@@ -11,4 +11,4 @@ It determines the goods, the entry and the carryover to and from the warehouseو
 first you need to define your products
 you need to enter each of your products into the system using the product sittings screen
 
-![alt text](https://drive.google.com/file/d/1zPl469XU93RtUn_Fuh4BBvx9dZmhjk8w/view?usp=sharing)
+![alt text](https://ibb.co/XZzHV8Q)
