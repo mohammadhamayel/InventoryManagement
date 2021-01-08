@@ -1,0 +1,12 @@
+ul{
+    display:inline-flex;
+}
+
+ul li{
+    padding-right: 50px;
+    font-size:large;
+}
+.title{
+    font-size: xx-large;
+    float: left;
+}

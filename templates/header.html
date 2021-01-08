@@ -2,10 +2,13 @@
 
 <head>
 
-    <title>Crud Application</title>
+    <title>Inventory Management</title>
     <link href="{{url_for('static', filename = 'css/bootstrap.min.css')}}" rel="stylesheet">
-<link rel="shortcut icon" href="{{url_for('static', filename = 'teacher.png' )}}">
+    <link href="{{url_for('static', filename = 'css/site.css')}}" rel="stylesheet">
 
+<style>
+
+</style>
 
 </head>
 
@@ -16,7 +19,12 @@
 
     <div class="well text-center">
 
-        <h1>Python Flask CRUD Web Application Development</h1>
-
+        <span class="title">Inventory Management</span>
+        <ul class="nav">
+            <li><a href="{{ url_for('product') }}">Product</a></li>
+            <li><a href="{{ url_for('location') }}">Location</a></li>
+            <li><a href="{{ url_for('product_movement') }}">Product_Movement</a></li>
+        </ul>
 
     </div>
+</div>
