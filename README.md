@@ -11,18 +11,18 @@ It determines the goods, the entry and the carryover to and from the warehouseو
 First: you need to define your products
 you need to enter each of your products into the system through product sittings screen
 
-![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/LocationPsge.PNG)
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/ProductPage.PNG)
 
 Then add your produst using product modal
 
-![alt text](https://ibb.co/XZzHV8Q)
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/insertProduct.PNG)
 
 
 Second: you need to define your Locations
 you need to enter each Location into the system from location sittings screen
 
-![alt text](https://ibb.co/XZzHV8Q)
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/LocationPsge.PNG)
 
 Then add your location using location modal
 
-![alt text](https://ibb.co/XZzHV8Q)
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/inseryLocation.PNG)
