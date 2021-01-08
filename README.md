@@ -8,7 +8,21 @@ It determines the goods, the entry and the carryover to and from the warehouseو
 
 # How to use the system
 
-<span style="font-weight: bold;">First</h4> you need to define your products
-you need to enter each of your products into the system using the product sittings screen
+First: you need to define your products
+you need to enter each of your products into the system through product sittings screen
+
+![alt text](https://ibb.co/XZzHV8Q)
+
+Then add your produst using product modal
+
+![alt text](https://ibb.co/XZzHV8Q)
+
+
+Second: you need to define your Locations
+you need to enter each Location into the system from location sittings screen
+
+![alt text](https://ibb.co/XZzHV8Q)
+
+Then add your location using location modal
 
 ![alt text](https://ibb.co/XZzHV8Q)
