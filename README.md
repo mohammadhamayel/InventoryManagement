@@ -17,6 +17,9 @@ Then add your produst using product modal
 
 ![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/insertProduct.PNG)
 
+if you made a mistake in the inserted data you can either edit it by clicking on "Edit" button or just delete it using "Delete" Button
+
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/inseryLocation.PNG)
 
 Second: you need to define your Locations
 you need to enter each Location into the system from location sittings screen
@@ -26,3 +29,8 @@ you need to enter each Location into the system from location sittings screen
 Then add your location using location modal
 
 ![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/inseryLocation.PNG)
+
+if you made a mistake in the inserted data you can either edit it by clicking on "Edit" button or just delete it using "Delete" Button
+
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/inseryLocation.PNG)
+
