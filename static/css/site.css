@@ -13,3 +13,9 @@ ul li{
 .mainContent{
     height:70%;
 }
+
+.alert-error{
+    color: #a00808;
+    background-color: #fd9696;
+    border-color: #bf3f3f;
+}

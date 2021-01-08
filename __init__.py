@@ -69,22 +69,29 @@ def insertLocation():
 def insertMovement():
 
     if request.method == "POST":
-        flash("Data Inserted Successfully")
+        cur = mysql.connection.cursor()
         Product_Name = request.form['Product_Name']
         From_Location = request.form['From_Location']
-        if (From_Location == ""):
-            From_Location = 0
+        Qty = request.form['Qty']
 
         To_Location = request.form['To_Location']
         if (To_Location == ""):
             To_Location = 0
 
+        if (From_Location == ""):
+            From_Location = 0
+        else:
+            data = cur.execute("SELECT SUM(movement_qty) FROM productmovement WHERE movement_product_id= %s "
+                               "and movement_to_location= %s", (Product_Name, To_Location))
+            if int(data) < int(Qty):
+                flash("You can't move a Qty grater than the existence in this location", 'error')
+                return redirect(url_for('product_movement'))
 
-        Qty = request.form['Qty']
-        cur = mysql.connection.cursor()
         cur.execute("INSERT INTO productmovement (movement_product_id, movement_from_location, movement_to_location, "
                     "movement_qty) VALUES (%s,%s,%s,%s)", (Product_Name, From_Location, To_Location, Qty))
         mysql.connection.commit()
+        flash("Data Inserted Successfully", 'success')
+
         return redirect(url_for('product_movement'))
 
 
@@ -210,7 +217,7 @@ def updateMovement():
 @app.route('/product')
 def product():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT  * FROM product")
+    cur.execute("SELECT  * FROM product order by product_id")
     data = cur.fetchall()
     cur.close()
 
@@ -219,7 +226,7 @@ def product():
 @app.route('/location')
 def location():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT  * FROM location")
+    cur.execute("SELECT  * FROM location order by location_id")
     data = cur.fetchall()
     cur.close()
 
@@ -231,10 +238,9 @@ def product_movement():
     cur.execute("SELECT  movement_id, movement_from_location, movement_to_location, movement_product_id,"
                 " product_name, location_Name, movement_qty "
                 "FROM productmovement left join product on movement_product_id = product_id "
-                "left join location on (movement_from_location = location_id or movement_to_location = location_id ) ")
+                "left join location on (movement_from_location = location_id or movement_to_location = location_id ) order by movement_id")
     data = cur.fetchall()
     cur.close()
-    print(data)
     return render_template('product_movement.html', productmovement=data)
 
 
