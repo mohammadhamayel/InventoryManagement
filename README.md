@@ -8,7 +8,7 @@ It determines the goods, the entry and the carryover to and from the warehouseو
 
 # How to use the system
 
-first you need to define your products
+<h4>First</h4> you need to define your products
 you need to enter each of your products into the system using the product sittings screen
 
 ![alt text](https://ibb.co/XZzHV8Q)
