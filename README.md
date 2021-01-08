@@ -6,6 +6,10 @@ This project is made to manage products in warehouses or shops that need a solut
 
 It determines the goods, the entry and the carryover to and from the warehouseو and also determines the location of each class of the goods.
 
+# Products Report
+
+![alt text](https://github.com/mohammadhamayel/InventoryManagement/blob/master/github_images/MainPage.PNG)
+
 # How to use the system
 
 First: you need to define your products
