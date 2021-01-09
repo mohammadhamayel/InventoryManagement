@@ -13,6 +13,7 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'Inventory_Management'
 
 mysql = MySQL(app)
+#cur = mysql.connection.cursor()
 
 
 @app.route('/')
@@ -59,7 +60,7 @@ def insertMovement():
         cur = mysql.connection.cursor()
         Product_Name = request.form['Product_Name']
         From_Location = request.form['From_Location']
-        Qty = request.form['Qty']
+        Qty = int(request.form['Qty'])
 
         To_Location = request.form['To_Location']
         if (To_Location == ""):
@@ -67,20 +68,25 @@ def insertMovement():
 
         if (From_Location == ""):
             From_Location = 0
- ####       else:
-##            data = cur.execute("SELECT SUM(movement_qty) FROM productmovement WHERE movement_product_id= %s "
-#                               "and movement_to_location= %s", (Product_Name, From_Location))
-#            print(data)
-
- #           if int(data) < int(Qty):
- #               flash("You can't move a Qty grater than the existence in this location", 'error')
- #               return redirect(url_for('product_movement'))
- #           else:
- #               restQty = int(data) - int(Qty)
- #               cur.execute(""" UPDATE productmovement SET
- #                               movement_qty=%s
- #                               WHERE movement_product_id= %s and movement_to_location= %s""",
- ###                           (restQty, Product_Name, To_Location))
+        else:
+            cur.execute("SELECT SUM(movement_qty) FROM productmovement WHERE movement_product_id= %s "
+                               "and movement_to_location= %s", (Product_Name, From_Location))
+            tot = 0
+            data = cur.fetchall()
+            for row in data:
+                print(row)
+                tot = int(row[0])
+                break
+            print(tot)
+            if tot < Qty:
+               flash("You can't move a Qty grater than the existence in this location", 'error')
+               return redirect(url_for('product_movement'))
+            else:
+                 restQty = tot - Qty
+                 cur.execute(""" UPDATE productmovement SET
+                                movement_qty=%s
+                                WHERE movement_product_id= %s and movement_to_location= %s""",
+                                (restQty, Product_Name, To_Location))
 
 
 
@@ -228,6 +234,14 @@ def getLists():
     dynamicLists["product"] = product
     return jsonify(dynamicLists)
 
+def dbSelectAll(tblName):
+    cur = mysql.connection.cursor()
+    data = cur.execute("SELECT  * FROM "+ tblName)
+    return  data
+
+
+#def db_insert(tblName, fieldNames, values):
+#    cur.execute("INSERT INTO "+tblName +" (" + fieldNames + " ) VALUES (%s,%s,%s,%s)", (values))
 
 
 if __name__ == "__main__":
